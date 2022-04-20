@@ -10,7 +10,14 @@ const graph = {
   title: "Accumulation of my React skillz",
   graphHeight: "320px",
   showDatapointMarker: true,
-  legend: "New concepts grasped",
+  legends: ["Self-confidence", "Complexity of code", "New concepts grasped"],
+  lineColors: ["fuchsia", "cyan", "yellow", "gray"],
+  dataPoints: [
+    [20, -10, 20, -10, 20, -10, 20, -10], 
+    [-10, -8, -5, -3, 3, 9, 19, 20], 
+    [-10, -9, -7, 1, 11, 11, 12, 16],
+    // [-10, 20, -10, 20, -10, 20, -10, 20],
+  ],
   xLabels: [
     "1.4.2022",
     "2.4.2022", 
@@ -21,31 +28,26 @@ const graph = {
     "7.4.2022", 
     "8.4.2022", 
   ],
-  lineColors: ["fuchsia", "cyan", "yellow", ],
   values: [-3, 1, 2, 6, 8, 12, 16, 20],
-  testValues: [
-    [1, 2, 3, 4, 5, 6, 7, 8], 
-    [20, -5, 8, 14, 12, 10, 3, 6], 
-    [15, 5, 15, 5, 15, 5, 15, 5],
-    [-10, 20, -10, 20, -10, 20, -10, 20],
-  ],
 };
 
 
 const App = () => {
+
   return (
     <div className="App">
       <Graph 
         title={graph.title} 
         graphHeight={graph.graphHeight} 
         showDatapointMarker={graph.showDatapointMarker} 
-        legend={graph.legend}
+        legends={graph.legends}
         xLabels={graph.xLabels}
         lineColors={graph.lineColors}
         values={graph.values}
-        testValues={graph.testValues}
+        dataPoints={graph.dataPoints}
       />
     </div>
+
   );
 }
 

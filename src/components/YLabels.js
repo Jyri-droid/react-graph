@@ -3,7 +3,7 @@ const separateThousands = (number) => {
 }
 
 const YLabels = (props) => {
-    return props.intervals.map((value) => <label className="label" key={value}>{separateThousands(value)}</label>);
+    return props.intervals.map((value) => <label className="label" key={"yLabel"+ value}>{separateThousands(value)}</label>);
 }
 
 export default YLabels;

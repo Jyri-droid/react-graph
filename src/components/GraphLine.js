@@ -14,12 +14,12 @@ const line = {
 const circle = {
     cx: 0,
     cy: 0,
-    r: 4,
+    r: 3,
     stroke: "springGreen",
-    strokeWidth: 4,
+    strokeWidth: 2,
 }
 
-// Translate data to graph height in %
+// Translate Y data to graph height in %
 const getY = (value, intervals) => {
     const range = Math.max(...intervals) - Math.min(...intervals);
     // Count position on graph in %
@@ -29,75 +29,55 @@ const getY = (value, intervals) => {
     return 100 - y + "%";
 }
 
+// Translate X data to graph width in %
+const getX = (amountOfDataPoints, index) => {
+    const margin = 100 / (amountOfDataPoints + 1) / 2;
+    const step = (100 - margin * 2) / (amountOfDataPoints);
+    return margin + step * index + "%";
+}
+
 const GraphLine = (props) => {
 
-    // TEST Print one or multiple arrays inside Graph JS object in console
-    props.testValues.map((value) => {
-        value.map((value, index) => {
-            return console.log("Value: " + value + " Index: " + index + "/");
-        });
-        return console.log("Done");
-    });
+    // Multiple lines
+    const allLines = props.dataPoints.map((objectValue, objectIndex) => {
 
-    // TEST Multiple lines
-    const testValues = props.testValues.map((objectValue, objectIndex) => {
+        const amountOfDataPoints = objectValue.length - 1;
 
-        const getX = (index) => {
-            const margin = 100 / ((objectValue.length - 1)  + 1) / 2;
-            const step = (100 - margin * 2) / (objectValue.length - 1);
-            return margin + step * index + "%";
-        }
+        // Create lines
+        const lineElements = objectValue.map((arrayValue, arrayIndex) =>
 
-        const lines = objectValue.map((arrayValue, arrayIndex) => 
-
-            <Line {...line} style={{stroke: props.lineColors[objectIndex]}}
+            <Line {...line} 
+                x1={getX(amountOfDataPoints, arrayIndex)} 
+                x2={getX(amountOfDataPoints, arrayIndex + 1)}    
                 y1={getY(arrayValue, props.intervals)}
-                y2={getY(objectValue[arrayIndex + 1], props.intervals)} 
-                x1={getX(arrayIndex)} 
-                x2={getX(arrayIndex + 1)}
-                key={arrayValue + arrayIndex}
+                y2={getY(objectValue[arrayIndex + 1], props.intervals)}
+                style={{stroke: props.lineColors[objectIndex]}}
+                key={"line" + arrayValue + arrayIndex}
             />
         );
-        lines.pop();
-        return lines;
+        lineElements.pop();
+
+        // Create datapoint markers
+        if (props.showDatapointMarker) {
+            const datapointElements = objectValue.map((arrayValue, arrayIndex) => 
+                <Circle {...circle}
+                    cx={getX(amountOfDataPoints, arrayIndex)} 
+                    cy={getY(arrayValue, props.intervals)} 
+                    style={{stroke: props.lineColors[objectIndex]}}
+                    key={"circle" + arrayValue + arrayIndex}
+                />
+            );
+            return [...lineElements, ...datapointElements]; // Render datapoints if they are set "true"
+        
+        } else {
+            return lineElements; // Render only lines if datapoints are set "false"
+        }
 
     });
 
-    // Count X points
-    const values = [...props.values];
-    const getX = (index) => {
-        const margin = 100 / ((values.length - 1)  + 1) / 2;
-        const step = (100 - margin * 2) / (values.length - 1);
-        return margin + step * index + "%";
-    }
+ 
+    return <>{allLines}</>;
 
-
-    // Create line
-    const graphLines = values.map((value, index) => (
-        <Line {...line}
-            y1={getY(value, props.intervals)} 
-            y2={getY(props.values[index + 1], props.intervals)} 
-            x1={getX(index)} 
-            x2={getX(index + 1)}
-            key={value}
-        />
-    ));
-    graphLines.pop();
-    // Create circles
-    if (props.showDatapointMarker) {
-        const circles = props.values.map((value, index) => (
-            <Circle {...circle} 
-                cx={getX(index)} 
-                cy={getY(value, props.intervals)} 
-                key={value}
-            />
-        ));
-        return <>{graphLines}{circles}{testValues}</>;
-    } else { 
-        return <>{graphLines}</>;
-    }
 }
   
 export default GraphLine;
-
-// ADD FUNCTIONS INSIDE COMPONENT -> LESS HASSLE AND DON'T HAVE TO HAVE PROPS JUMP AROUND

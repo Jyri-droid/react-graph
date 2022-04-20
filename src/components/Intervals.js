@@ -11,9 +11,11 @@ const line = {
 }
 
 const Intervals = (props) => {
-    const intervalYs = props.intervals.map((value, index) => 100 / (props.intervals.length - 1) * index + "%");
+    const intervalYs = props.intervals.map((value, index) => 
+        100 / (props.intervals.length - 1) * index + "%"
+    );
     intervalYs.push("100%");
-    return intervalYs.map((value) => <Line {...line} y1={value} y2={value} key={value}></Line>);
+    return intervalYs.map((value, index) => <Line {...line} y1={value} y2={value} key={"intervals"+ index}></Line>);
 }
 
 export default Intervals;

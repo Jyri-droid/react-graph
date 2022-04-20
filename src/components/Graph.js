@@ -3,6 +3,7 @@ import GraphLine from './GraphLine.js';
 import YLabels from './YLabels.js';
 import XLabels from './XLabels.js';
 import Legend from './Legend.js';
+import { useState } from "react";
 import "../intervalCalculator.js";
 
 // Count a pretty range and intervals
@@ -13,7 +14,6 @@ const getPowerOfTen = (number) => {
   while (number / multiplier < 1 || number / multiplier >= 10) {
       multiplier = multiplier * 10;
   }
-  console.log("getPowerTen function did a run!");
   return multiplier;
 }
 
@@ -24,7 +24,6 @@ const getDividingNumber = (number) => {
       dividingNumber++;
       division = number / dividingNumber;
   }
-  console.log("getDividingNumber function did a run!");
   return dividingNumber; 
 }
 
@@ -32,7 +31,6 @@ const getIntervalValues = (values) => {
   // Get smallest and highest numbers in values
   let min = Math.min(...values);
   let max = Math.max(...values);
-  console.log("Highest value" + max);
   // Check which one has bigger power of ten
   let powerOfTen;
   if (getPowerOfTen(max) >= getPowerOfTen(min)) {
@@ -50,13 +48,16 @@ const getIntervalValues = (values) => {
   for (let j = 0; j < amountOfSteps + 1; j++) {
       steps.push(((range / amountOfSteps) * j + min) * powerOfTen / 10);
   }
-  console.log("getIntervals function did a run!");
   return steps;
 }
 
+
+// Render graph
 const Graph = (props) => {
 
   const intervals = getIntervalValues(props.values);
+  const [opacity, setOpacity] = useState(1);
+
   return (
     <>
     <div className="graph" style={{height: props.graphHeight}}>
@@ -68,7 +69,14 @@ const Graph = (props) => {
         <div className="leftColumn">
           <svg xmlns="http://www.w3.org/2000/svg" id="graphSvg" width="100%" overflow="visible">
             <Intervals values={props.values} intervals={intervals}/>
-            <GraphLine testValues={props.testValues} values={props.values} intervals={intervals} showDatapointMarker={props.showDatapointMarker} lineColors={props.lineColors}/>
+            <GraphLine 
+              dataPoints={props.dataPoints} 
+              values={props.values} 
+              intervals={intervals} 
+              showDatapointMarker={props.showDatapointMarker} 
+              datapointMarkers={props.datapointMarkers} 
+              lineColors={props.lineColors}
+            />
           </svg>
           <div className="xLabels">
             <XLabels values={props.values} xLabels={props.xLabels}/>
@@ -80,17 +88,20 @@ const Graph = (props) => {
         </div>
 
       </div>
-
-      <Legend legend={props.legend}/>
+      <div className="legendContainer">
+        {props.legends.map((value, index) => 
+          <Legend 
+            text={value} 
+            lineColor={props.lineColors[index]}
+            opacity={opacity}
+            setOpacity={setOpacity}
+            key={"legend" + index}
+          />)}
+      </div>
 
     </div>
     </>
   );
 }
-  
+
 export default Graph;
-
-
-// Check: Composition > How to make multiple graph lines
-// Composition vs. props
-// Destructuring > Pick things from arrays , Making default values for components

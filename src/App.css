@@ -74,20 +74,40 @@ body * {
   overflow: hidden;
 }
 
-.legend {
+.legendContainer {
   display: flex;
   justify-content: center;
-  margin: 1rem 0 .25rem 0;
+  margin-top: 1.5rem;
+}
+
+button.legend {
+  display: flex;
+  margin-right: .25rem;
   font-size: .75rem;
   transition: background-color .2s;
+  position: relative;
+  background-color: transparent;
+  border: none;
+  padding: 0;
+}
+
+button.legend:active {
+  transform: scale(1.1);
+  transition: transform .2s;
 }
 
 .legend > svg {
-  margin: .7rem .6rem 0 0;
+  margin: .7rem .2rem 0 1rem;
 }
 
 .legend > p {
-  padding: .25rem;
+  margin: .25rem 1rem .25rem .25rem;
+}
+
+.legend > i {
+  font-size: 1rem;
+  margin-top: .2rem;
+  display: none;
 }
 
 .legend:hover {
@@ -97,21 +117,13 @@ body * {
 }
 
 .legend:hover > p:first-of-type, .legend:hover > svg  {
-  display: none;
+  opacity: 0;
 }
 
-.legend:hover > i, .legend:hover > p:last-of-type {
+.legend:hover > i {
+  position: absolute;
+  left: calc(50% - .5rem);
   display: block;
-}
-
-.legend > p:last-of-type {
-  display: none;
-}
-
-.legend > i {
-  font-size: 1rem;
-  margin: .2rem .5rem 0 0;
-  display: none;
 }
 
 @media only screen and (max-width: 600px) {
