@@ -10,13 +10,20 @@ const line = {
 
 const Legend = (props) => {
 
-    const toggleOpacity = () => {
-        props.opacity === 1 ? props.setOpacity(0) : props.setOpacity(1);
-        console.log("Opacity is now: " + props.opacity);
-      };
+    const handleClick = (index) => {
+        // If legend is clicked and its index is not inside visibility, bring it back
+        console.log(index);
+        if (!props.visibility.includes(index)) {
+            const newVisibility = [...props.visibility, index];
+            props.setVisibility(newVisibility);
+        } else {
+            const newVisibility = props.visibility.filter((value) => value !== index);
+            props.setVisibility(newVisibility);
+        }
+    };
 
     return <>
-        <button className="legend" onClick={toggleOpacity}>
+        <button className="legend" onClick={() => handleClick(props.index)}>
             <svg 
                 xmlns="http://www.w3.org/2000/svg" 
                 width={line.x2} 
@@ -26,7 +33,7 @@ const Legend = (props) => {
                 <Line {...line}/>
             </svg>
             <p>{props.text}</p>
-            <i className="material-icons" >visibility_off</i>
+            <i className="material-icons" >{props.visibility.includes(props.index) ? "visibility_off" : "visibility_on"}</i>
         </button>
         </>
 };

@@ -55,31 +55,39 @@ const getIntervalValues = (values) => {
 // Render graph
 const Graph = (props) => {
 
-  const intervals = getIntervalValues(props.values);
-  const [opacity, setOpacity] = useState(1);
+  const { title, graphHeight, showDatapointMarker, legends, xLabels, lineColors, values, dataPoints } = props;
+
+  const intervals = getIntervalValues(values);
+
+  const initialVisibility = [];
+  for (let i = 0; i < dataPoints.length; i++) {
+    initialVisibility.push(i);
+  }
+
+  const [visibility, setVisibility] = useState(initialVisibility);
 
   return (
     <>
-    <div className="graph" style={{height: props.graphHeight}}>
+    <div className="graph" style={{height: graphHeight}}>
 
-      <h3>{props.title}</h3>
+      <h3>{title}</h3>
       
       <div className="graphContainer">
 
         <div className="leftColumn">
           <svg xmlns="http://www.w3.org/2000/svg" id="graphSvg" width="100%" overflow="visible">
-            <Intervals values={props.values} intervals={intervals}/>
+            <Intervals values={values} intervals={intervals}/>
             <GraphLine 
-              dataPoints={props.dataPoints} 
-              values={props.values} 
+              dataPoints={dataPoints} 
+              values={values} 
               intervals={intervals} 
-              showDatapointMarker={props.showDatapointMarker} 
-              datapointMarkers={props.datapointMarkers} 
-              lineColors={props.lineColors}
+              showDatapointMarker={showDatapointMarker} 
+              lineColors={lineColors}
+              visibility={visibility}
             />
           </svg>
           <div className="xLabels">
-            <XLabels values={props.values} xLabels={props.xLabels}/>
+            <XLabels values={values} xLabels={xLabels}/>
           </div>
         </div>
         
@@ -89,12 +97,13 @@ const Graph = (props) => {
 
       </div>
       <div className="legendContainer">
-        {props.legends.map((value, index) => 
+        {legends.map((value, index) => 
           <Legend 
             text={value} 
             lineColor={props.lineColors[index]}
-            opacity={opacity}
-            setOpacity={setOpacity}
+            visibility={visibility}
+            setVisibility={setVisibility}
+            index={index}
             key={"legend" + index}
           />)}
       </div>

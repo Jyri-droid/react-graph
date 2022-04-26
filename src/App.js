@@ -6,6 +6,8 @@ import './App.css';
 // Use state > CodeSandbox
 // Use effect
 
+// Convert JS Object to array containing obejcts
+
 const graph = {
   title: "Accumulation of my React skillz",
   graphHeight: "320px",

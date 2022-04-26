@@ -42,6 +42,9 @@ const GraphLine = (props) => {
     const allLines = props.dataPoints.map((objectValue, objectIndex) => {
 
         const amountOfDataPoints = objectValue.length - 1;
+        console.log("Visibility", props.visibility);
+        console.log(props.visibility.includes(objectIndex));
+        
 
         // Create lines
         const lineElements = objectValue.map((arrayValue, arrayIndex) =>
@@ -51,27 +54,23 @@ const GraphLine = (props) => {
                 x2={getX(amountOfDataPoints, arrayIndex + 1)}    
                 y1={getY(arrayValue, props.intervals)}
                 y2={getY(objectValue[arrayIndex + 1], props.intervals)}
-                style={{stroke: props.lineColors[objectIndex]}}
+                style={{stroke: props.lineColors[objectIndex], opacity: props.visibility.includes(objectIndex) ? 1 : 0}}
                 key={"line" + arrayValue + arrayIndex}
             />
         );
         lineElements.pop();
 
-        // Create datapoint markers
-        if (props.showDatapointMarker) {
-            const datapointElements = objectValue.map((arrayValue, arrayIndex) => 
-                <Circle {...circle}
-                    cx={getX(amountOfDataPoints, arrayIndex)} 
-                    cy={getY(arrayValue, props.intervals)} 
-                    style={{stroke: props.lineColors[objectIndex]}}
-                    key={"circle" + arrayValue + arrayIndex}
-                />
-            );
-            return [...lineElements, ...datapointElements]; // Render datapoints if they are set "true"
+
+        const datapointElements = objectValue.map((arrayValue, arrayIndex) => 
+            <Circle {...circle}
+                cx={getX(amountOfDataPoints, arrayIndex)} 
+                cy={getY(arrayValue, props.intervals)} 
+                style={{stroke: props.lineColors[objectIndex], opacity: props.showDatapointMarker && props.visibility.includes(objectIndex) ? 1 : 0}}
+                key={"circle" + arrayValue + arrayIndex}
+            />
+        );
+        return [...lineElements, ...datapointElements];
         
-        } else {
-            return lineElements; // Render only lines if datapoints are set "false"
-        }
 
     });
 
