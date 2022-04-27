@@ -32,7 +32,7 @@ const Legend = (props) => {
             >
                 <Line {...line}/>
             </svg>
-            <p>{props.text}</p>
+            <p style={{textDecoration: props.visibility.includes(props.index) ? "none" : "line-through"}}>{props.text}</p>
             <i className="material-icons" >{props.visibility.includes(props.index) ? "visibility_off" : "visibility_on"}</i>
         </button>
         </>

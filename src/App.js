@@ -15,7 +15,7 @@ const graph = {
   legends: ["Self-confidence", "Complexity of code", "New concepts grasped"],
   lineColors: ["fuchsia", "cyan", "yellow", "gray"],
   dataPoints: [
-    [20, -10, 20, -10, 20, -10, 20, -10], 
+    [-10, 5, -2, 15, 20, -10, 20, 10], 
     [-10, -8, -5, -3, 3, 9, 19, 20], 
     [-10, -9, -7, 1, 11, 11, 12, 16],
     // [-10, 20, -10, 20, -10, 20, -10, 20],
